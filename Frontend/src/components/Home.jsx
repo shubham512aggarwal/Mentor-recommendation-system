@@ -21,7 +21,7 @@ const Home = () => {
       <nav className="navbar">
         <div className="navbar-left">Mentor Recommendation</div>
         <div className="navbar-right">
-          <button className="btn add-project" onClick={() => alert("Add Project Clicked")}>Add Project</button>
+          <button className="btn add-project" onClick={() => navigate("/AddProject")}>Add Project</button>
           <button className="btn logout" onClick={handleLogout}>Logout</button>
         </div>
       </nav>

@@ -3,6 +3,7 @@ import Login from "../components/Login";
 import Signup from "../components/Signup";
 import Home from "../components/Home";
 import ProtectedRoute from "./ProtectedRoutes";
+import AddProject from "../components/AddProject";
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,7 @@ const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       <Route element={<ProtectedRoute/>} >
         <Route path="/home" element={<Home />} />
+        <Route path="/AddProject" element={<AddProject/>}/>
       </Route>
     </Routes>
   );

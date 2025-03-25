@@ -20,6 +20,31 @@ function App() {
     return clearInterval(interval);
   }, [navigate]);
   
+  
+  useEffect(() => {
+    let timeout;
+
+    const resetTimer = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        localStorage.removeItem("token"); // Remove token
+        console.log("Session expired.");
+        navigate("/login");
+      }, 15 * 60 * 1000); // 15 minutes
+    };
+
+    document.addEventListener("mousemove", resetTimer);
+    document.addEventListener("keypress", resetTimer);
+
+    resetTimer(); // Start timer
+
+    return () => {
+      clearTimeout(timeout);
+      document.removeEventListener("mousemove", resetTimer);
+      document.removeEventListener("keypress", resetTimer);
+    };
+  }, [navigate]);
+  
   return (
     <AppRoutes />
   )
