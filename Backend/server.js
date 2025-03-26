@@ -8,6 +8,7 @@ const studentRoutes = require("./Routes/registerRoute");
 const loginRoutes = require("./Routes/loginRoute");
 const getStudentDetails = require("./Routes/getStudentDetails");
 const addProject = require("./Routes/addNewProject");
+const getProjects = require("./Routes/getProjects");
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use("/api/students", studentRoutes);
 app.use("/api/students", loginRoutes);
 app.use("/api/students", getStudentDetails);
 app.use("/api/students", addProject);
+app.use("/api/students", getProjects);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
