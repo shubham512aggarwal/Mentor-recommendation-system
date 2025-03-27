@@ -11,7 +11,10 @@ const projectSchema = new mongoose.Schema(
     },
     project_name: { type: String, required: true },
     project_idea: { type: String, required: true },
-    tech_stack: [{ type: String, required: true }]
+    tech_stack: [{ type: String, required: true }],
+    status: { type: String },
+    mentor: { type: String }
+
   },
   { timestamps: true }
 );

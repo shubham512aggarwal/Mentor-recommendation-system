@@ -1,7 +1,8 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import DeleteConfirmationModal from "./DeleteProject";
 
 const Home = () => {
 
@@ -14,7 +15,6 @@ const Home = () => {
         headers: {Authorization: `Bearer ${token}`}
       });
       setProjects(response.data.projects);
-      console.log(" Hi ", response.data);
     }
     catch(error){
       console.log("Error in fetching projects!", error);
@@ -38,32 +38,27 @@ const Home = () => {
     }
   };
 
-  const demoprojects = [
-    {
-      id: 1,
-      name: "AI Chatbot",
-      idea: "A chatbot that uses NLP to answer queries.",
-      techStack: ["Python", "TensorFlow"],
-      mentor: "Dr. Smith",
-      status: "inprogress",
-    },
-    {
-      id: 2,
-      name: "E-commerce App",
-      idea: "A full-stack app for online shopping.",
-      techStack: ["React", "Node.js", "MongoDB"],
-      mentor: "Prof. Johnson",
-      status: "submitted",
-    },
-    {
-      id: 3,
-      name: "Blockchain Voting",
-      idea: "A secure voting system using blockchain.",
-      techStack: ["Solidity", "Ethereum"],
-      mentor: "Ms. Brown",
-      status: "ideation",
-    },
-  ];
+  const handleEditProject = (project) => {
+    navigate("/addProject", { state: { project } });
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      console.log(projectToDelete._id);
+      await axios.delete(`http://localhost:5000/api/students/delete/${projectToDelete._id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setShowModal(false);
+      setProjectToDelete(null);
+      fetchProjects(); // Refresh project list
+    } catch (error) {
+      console.log("Error deleting project", error);
+    }
+  };
 
   return (
     <>
@@ -90,22 +85,38 @@ const Home = () => {
         <tbody>
           {projects.map((project) => (
             <tr key={project._id}>
-              <td>{project.student.name}</td>
+              <td>{project.project_name}</td>
               <td>{project.project_idea}</td>
               <td>{project.tech_stack.join(", ")}</td>
-              <td></td>
               <td>
-                {/* <span className={`status ${project.status}`}>{project.status}</span> */}
+                {project.mentor ? (
+                  <span className="mentor-name">
+                    {project.mentor} <FaEdit className="icon edit-icon" />
+                  </span>) : (
+                  <FaPlus className="icon add-icon" title="Assign Mentor" />)
+                }
+              </td>
+              <td>
+                <span className={`status ${project.status}`}>{project.status}</span>
               </td>
               <td className="action-icons">
-                <FaEdit className="icon edit-icon" />
-                <FaTrash className="icon delete-icon" />
+                <FaEdit className="icon edit-icon" onClick={()=> handleEditProject(project)}/>
+                <FaTrash className="icon delete-icon" onClick={() => {setProjectToDelete(project); setShowModal(true);}}/>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       </div>
+      <DeleteConfirmationModal
+        show={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setProjectToDelete(null);
+        }}
+        onDelete={handleDelete}
+        projectName={projectToDelete?.project_name}
+      />
     </>
   );
 };

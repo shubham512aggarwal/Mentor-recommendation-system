@@ -23,7 +23,7 @@ const Login = () => {
       const res =  await axios.post("http://localhost:5000/api/students/login", formData);
       setSuccess(res.data.message);
       localStorage.setItem("token", res.data.token);
-      navigate("/home");
+      navigate("/");
     }
     catch(error){
       setError(error);
