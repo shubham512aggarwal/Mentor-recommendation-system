@@ -30,7 +30,7 @@ function App() {
         localStorage.removeItem("token"); // Remove token
         console.log("Session expired.");
         navigate("/login");
-      }, 15 * 60 * 1000); // 15 minutes
+      }, 50 * 60 * 1000); // 15 minutes
     };
 
     document.addEventListener("mousemove", resetTimer);

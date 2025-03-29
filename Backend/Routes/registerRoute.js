@@ -7,7 +7,6 @@ const Router = express.Router();
 Router.post("/register", async (req, res) => {
     try {
       const { name, email, password, institute, course, major, rollNumber, gender, dob } = req.body;
-      console.log(req.body);
       // Check if email or roll number already exists
       const existingStudent = await student.findOne({ $or: [{ email }, { rollNumber }] });
       if (existingStudent) {

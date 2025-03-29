@@ -42,13 +42,16 @@ const Home = () => {
     navigate("/addProject", { state: { project } });
   };
 
+  const showProjectDetails = (project) => {
+    navigate("/ProjectDetails", {state: {project}})
+  };
+
   const [showModal, setShowModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
 
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
-      console.log(projectToDelete._id);
       await axios.delete(`http://localhost:5000/api/students/delete/${projectToDelete._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -93,7 +96,7 @@ const Home = () => {
                   <span className="mentor-name">
                     {project.mentor} <FaEdit className="icon edit-icon" />
                   </span>) : (
-                  <FaPlus className="icon add-icon" title="Assign Mentor" />)
+                  <FaPlus className="icon add-icon" title="Assign Mentor" onClick={()=> showProjectDetails(project)} />)
                 }
               </td>
               <td>

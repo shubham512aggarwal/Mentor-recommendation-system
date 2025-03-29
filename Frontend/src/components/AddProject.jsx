@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 
-const AddProject = ({existingProject}) => {
+const AddProject = () => {
 
     const [studentData, setStudentData] = useState({
         name: "",
@@ -41,7 +41,6 @@ const AddProject = ({existingProject}) => {
 
     useEffect(() => {
         if (project) {
-            console.log(project)
           setProjectData({
             _id: project._id,
             project_name: project.project_name,
@@ -80,8 +79,8 @@ const AddProject = ({existingProject}) => {
 
     const handleTechStackAdd = () => {
         if (techStackInput.trim()) {
-            const newTech = techStackInput.trim().toLowerCase(); // Convert input to lowercase
-    
+            const newTech = techStackInput.trim(); // Convert input to lowercase
+            
             if (!projectData.tech_stack.includes(newTech)) {
                 setProjectData({
                     ...projectData,
@@ -96,13 +95,10 @@ const AddProject = ({existingProject}) => {
         e.preventDefault();
         try{
             const token = localStorage.getItem("token");
-            console.log({...studentData, ...projectData});
             const response = await axios.post("http://localhost:5000/api/students/addNewProject",
                 {...studentData, ...projectData},
                 {headers: {Authorization: `Bearer ${token}`}}
             );
-
-            console.log("Project added successfully", response.data);
             setProjectData({project_name:"", project_idea: "", tech_stack: []});
             navigate("/");
         }
